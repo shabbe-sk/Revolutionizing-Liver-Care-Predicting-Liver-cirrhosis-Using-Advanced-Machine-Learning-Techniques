@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liver Care Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <!-- Main Card Wrapper -->
+    <div class="card">
+        
+        <!-- Header Section -->
+        <div class="card-header">
+            <h1>Liver Care Prediction</h1>
+            <p>Predict Liver Cirrhosis Stage using ML Techniques</p>
+        </div>
+
+        <!-- Body with Form -->
+        <div class="card-body">
+            <form method="POST" id="predictionForm">
+                <div class="form-grid">
+                    {% for col in columns %}
+                        <div class="form-group">
+                            <label for="{{ col }}">{{ col }}:</label>
+
+                            {% if col in encode_maps %}
+                                <select name="{{ col }}" id="{{ col }}" required>
+                                    <option value="" disabled selected>Select {{ col }}</option>
+                                    {% for option in encode_maps[col] %}
+                                        <option value="{{ option }}">{{ option }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                <input type="number" name="{{ col }}" id="{{ col }}" step="any" placeholder="Enter {{ col }}" required>
+                                {% if col == 'Age' %}
+                                    <span class="note">Enter age in years</span>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="form-action">
+                    <button type="submit">Predict</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Result Display -->
+    <div id="result"></div>
+
+    <!-- Script for Handling Form -->
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const ageInput = document.getElementById('Age');
+            if (ageInput && ageInput.value) {
+                const ageYears = parseFloat(ageInput.value);
+                if (!isNaN(ageYears)) {
+                    ageInput.value = (ageYears * 365).toFixed(0);
+                }
+            }
+
+            const formData = new FormData(e.target);
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<p>Loading...</p>';
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error(HTTP error! status: ${response.status});
+
+                const data = await response.json();
+                if (data.error) {
+                    resultDiv.innerHTML = <p class="error">Server Error: ${data.error}</p>;
+                } else {
+                    const predictionText = data.prediction == 1 ? 'Yes' : (data.prediction == 0 ? 'No' : data.prediction);
+                    resultDiv.innerHTML = `
+                        <h3>Prediction Result</h3>
+                        <p class="success">Predicted Stage: <strong>${predictionText}</strong></p>
+                        <p class="info">Interpretation: ${data.interpretation}</p>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = <p class="error">Error: ${error.message}</p>;
+                console.error('Fetch error:', error);
+            }
+        });
+    </script>
+
+</body>
+</html>
