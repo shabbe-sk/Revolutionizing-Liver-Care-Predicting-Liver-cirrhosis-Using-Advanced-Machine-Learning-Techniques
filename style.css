@@ -1,0 +1,140 @@
+/* Base Layout */
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #f2f6fa;
+    margin: 0;
+    padding: 40px 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333;
+}
+
+/* Card Wrapper */
+.card {
+    background-color: #ffffff;
+    max-width: 800px;
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+}
+
+/* Header Section */
+.card-header {
+    background: linear-gradient(to right, #00b4d8, #90e0ef);
+    color: #ffffff;
+    padding: 30px;
+    text-align: center;
+}
+
+.card-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+.card-header p {
+    margin-top: 8px;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Form Section */
+.card-body {
+    padding: 30px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+input[type="number"],
+select {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #f9fcff;
+    transition: border 0.3s ease;
+}
+
+input[type="number"]:focus,
+select:focus {
+    border-color: #00b4d8;
+    outline: none;
+}
+
+/* Submit Button */
+.form-action {
+    text-align: center;
+    margin-top: 30px;
+}
+
+button {
+    background: linear-gradient(to right, #0077b6, #48cae4);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 180, 216, 0.2);
+}
+
+button:hover {
+    transform: scale(1.02);
+    background: linear-gradient(to right, #005f99, #00b4d8);
+}
+
+/* Result Display */
+#result {
+    margin: 40px auto 0 auto;
+    max-width: 800px;
+    background: #ffffff;
+    border-left: 6px solid #00b4d8;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.1);
+    display: none;
+    font-size: 1rem;
+    color: #333;
+}
+
+.success {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.error {
+    color: #c62828;
+    font-weight: bold;
+}
+
+.info {
+    margin-top: 10px;
+    color: #555;
+    font-style: italic;
+}
